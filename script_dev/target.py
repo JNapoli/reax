@@ -4,7 +4,6 @@ import sys
 class Target:
     def __init__(self, fn_train):
         self.poses = self.load_poses(fn_train)
-        print(len(self.poses))
 
     def load_poses(self, fn_train):
         poses = []
