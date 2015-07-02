@@ -3,7 +3,7 @@ import sys
 
 class Target:
     def __init__(self, fn_train):
-        self.poses = self.load_poses(fn_train)
+        self.poses, self.energies = self.load_poses(fn_train)
 
     def load_poses(self, fn_train):
         poses = []
@@ -19,4 +19,5 @@ class Target:
             h2o_atom_coords = [tuple(line.split()[1:]) for line in coord_lines]
             poses.append((h2o_atom_coords, e_in_Ha))
             start += len_chunk
-        return poses
+        energies = np.array([elem[1] for elem in poses])
+        return poses, energies
