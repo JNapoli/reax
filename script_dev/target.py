@@ -7,7 +7,7 @@ class Target:
         Target initialized by loading all poses and their
         corresponding energies from file fn_train
         """
-        self.poses, self.energies, self.type = self.load_poses(fn_train)
+        self.poses, self.energies, self.series_type = self.load_poses(fn_train)
 
     def load_poses(self, fn_train):
 
@@ -31,11 +31,11 @@ class Target:
         energies = np.array([elem[1] for elem in poses])
 
         if len(poses[0][0]) == 3:
-            type = 'monomer'
+            s_type = 'monomer'
         elif len(poses[0][0]) == 6:
-            type = 'dimer'
+            s_type = 'dimer'
         elif len(poses[0][0]) == 9:
-            type = 'trimer'
+            s_type = 'trimer'
 
-        return poses, energies, type
+        return poses, energies, s_type
 
