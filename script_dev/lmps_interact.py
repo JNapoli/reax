@@ -19,7 +19,7 @@ class Interaction(object):
         if not np.equal(x, self._x).all():
             self._update(x)
 
-        return self._V
+        return self.V
 
     def dV_dx(self, x):
 
@@ -62,7 +62,7 @@ class LAMMPS(Interaction):
         self._x = np.zeros(N)
 
         # Allocate energy and derivatives caches
-        self._V = None
+        self.V = None
         self._dV_dx = np.zeros(N)
 
     def setup(self):
@@ -84,7 +84,7 @@ class LAMMPS(Interaction):
         # Ctypes array for LAMMPS position data
         self._x_c = (N * ct.c_double)()
 
-    def _update(self, x):
+    def update(self, x):
 
         # Our LAMMPS instance
         lmp = self._lmp
@@ -100,8 +100,7 @@ class LAMMPS(Interaction):
         lmp.command('run 1 pre no post no')
 
         # Get energy and forces from LAMMPS
-        self._V = float(lmp.extract_compute('thermo_pe', 0, 0)) * self.unit_lmp_V
+        self.V = float(lmp.extract_compute('thermo_pe', 0, 0)) * self.unit_lmp_V
         F_c = lmp.gather_atoms('f', 1, 3)
         self._dV_dx[:] = F_c[:]
-
         self._dV_dx += - self.unit_lmp_F 

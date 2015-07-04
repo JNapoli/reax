@@ -7,9 +7,9 @@ class Target:
         Target initialized by loading all poses and their
         corresponding energies from file fn_train
         """
-        self.poses, self.energies, self.series_type = self.load_poses(fn_train)
+        self.poses, self.energies, self.series_type = self._load_poses(fn_train)
 
-    def load_poses(self, fn_train):
+    def _load_poses(self, fn_train):
 
         poses = []
 
