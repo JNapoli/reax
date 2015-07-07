@@ -7,25 +7,19 @@ class Interaction(object):
     """Base class for all interactions, from Ondrej"""
     
     def __init__(self):
-            
         pass
 
     def _update(x):
-
         raise NotImplementedError
 
     def V(self, x):
-
         if not np.equal(x, self._x).all():
             self._update(x)
-
         return self.V
 
     def dV_dx(self, x):
-
         if not np.equal(x, self._x).all():
             self._update(x)
-
         return self._dV_dx
     
 
@@ -38,7 +32,7 @@ class LAMMPS(Interaction):
 
     def __init__(self, fn_lmp, units_lmp='real'):
 
-        # For now assume use of real units.
+        # For now assume use of real units
         if units_lmp == 'real':
             self.unit_lmp_x = units.A
             self.unit_lmp_V = units.kcal_mol
