@@ -1,3 +1,4 @@
+
 import ctypes as ct
 import numpy as np
 
@@ -5,11 +6,6 @@ import lammps
 
 
 class LAMMPS(object):
-    """
-    Extract interactions from LAMMPS.
-
-    Positions cached and energies and forces reevaluated if needed.
-    """
 
     def __init__(self, fn_lmp):
 
@@ -43,7 +39,7 @@ class LAMMPS(object):
         lmp = self._lmp
 
         # Update LAMMPS positions 
-        self._x_c[:] = x # x is a numpy array
+        self._x_c[:] = x
         lmp.scatter_atoms('x', 2, 3, self._x_c)
 
         # Update energy and forces in LAMMPS

@@ -15,6 +15,7 @@ class Target(object):
 
         poses = []
 
+        # TODO: Function for parsing data directly from file
         with open(fn_train,'r') as f:
             raw_dat = [line.strip() for line in f.readlines()]
         
