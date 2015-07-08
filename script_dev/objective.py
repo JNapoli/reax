@@ -1,7 +1,9 @@
 import ctypes as ct
 import numpy as np
 
-import lmps_interact, os, target
+import lmps_interact
+import os
+import target
 
 
 def prepare_coords(x, pose_coords):
@@ -17,7 +19,7 @@ def prepare_coords(x, pose_coords):
             curr += 1
 
 
-class Objective:
+class Objective(object):
     def __init__(self, target, lmp_engine):
         """
         Compute objective function, given an engine instance
@@ -87,4 +89,4 @@ class Objective:
         # TODO: make X2 contribution coefficients more general
         X2 = sum(((e_series - target.energies) / unit.kT )**2) 
 
-    return X2
+        return X2
