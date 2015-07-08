@@ -1,7 +1,9 @@
+
 import numpy as np
 import sys
 
-class Target:
+
+class Target(object):
     def __init__(self, fn_train):
         """
         Target initialized by loading all poses and their
@@ -24,7 +26,7 @@ class Target:
             lines = raw_dat[start:start+len_chunk]
             e_in_Ha = float(lines[1])
             coord_lines = lines[2:]
-            h2o_atom_coords = [tuple(line.split()[1:]) for line in coord_lines]
+            h2o_atom_coords = np.array([tuple(line.split()[1:]) for line in coord_lines])
             poses.append((h2o_atom_coords, e_in_Ha))
             start += len_chunk
         
