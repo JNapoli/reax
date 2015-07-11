@@ -1,9 +1,7 @@
-
 import ctypes as ct
 import numpy as np
 
 import lammps
-
 
 class LAMMPS(object):
 

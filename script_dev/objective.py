@@ -6,7 +6,6 @@ import os
 import target
 import unit
 
-
 class Objective(object):
     def __init__(self, tar, lmp_engine):
         """
