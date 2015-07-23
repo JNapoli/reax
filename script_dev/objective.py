@@ -64,6 +64,7 @@ class Objective(object):
             pass
 
         e_series = np.array(e_series)
-        X2 = sum(((e_series - self._tar.energies) / unit.kT )**2) 
+        diff = e_series - self._tar.energies
+        X2 = sum((diff / np.average(diff))**2) 
 
         return X2
