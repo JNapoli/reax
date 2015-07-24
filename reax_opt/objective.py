@@ -18,22 +18,22 @@ class Objective(object):
         self.X2       = self.compute_X2()
 
     def compute_X2(self):
-
         X2 = None
         lmp = self._lmp
         N = lmp.N
         e_series = []
 
         if self._tar.series_type == 'monomer':
-
             for pose in self._tar.poses:
                 e_series.append(lmp.get_V(pose[0].reshape((1,-1))))
 
         elif self._tar.series_type == 'dimer':
             # Requires auxiliary engine
             # for monomer calculations
+            root = os.getcwd()
             os.chdir(os.path.join(os.getcwd(), 'monomer_files'))
             lmp_mono = lmps_interact.LAMMPS('in.water')
+            os.chdir(root)
 
             e_m1 = []
             e_m2 = []

@@ -1,0 +1,17 @@
+monomials.txt : list of the monomials contributing to the short-range
+                MB-pol 2-body terms
+
+mbpol-2b.tar.gz : implementation of the potential
+
+ccpol-hbb2-mbpol.pdf : comparison of the CCpol-8sf, HBB2 and MB-pol
+                       against CCSD(T)/CBS data from the MB-pol
+                       training set
+
+ts-*-.xyz : short-range tranining set used for the 2-body part of the MB-pol;
+            two body interaction energy for each configuration is listed
+            in the comment line of the XYZ frames (in kcal/mol); the training
+            set consists of four parts of different origin: "ccpol" dimers
+            are from JCP 128, 094314 (2008); "stationary" dimers include
+            10 stationary points and their neighborhoods; "pimd-run10?"
+            samples are extracted from NVT PIMD simulation of liquid water
+            at ambient conditions under the HBB2-pol potential

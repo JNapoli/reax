@@ -2,11 +2,10 @@ import ctypes as ct
 import numpy as np
 
 import lammps
+import os
 
 class LAMMPS(object):
-
     def __init__(self, fn_lmp):
-
         # Load all LAMMPS commands
         lammps_in = open(fn_lmp).read().splitlines()
         self._lammps_in = lammps_in
@@ -32,7 +31,6 @@ class LAMMPS(object):
         self._x_c = (N * ct.c_double)()
 
     def get_V(self, x):
-
         # Our LAMMPS instance
         lmp = self._lmp
 
