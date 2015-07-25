@@ -16,6 +16,7 @@ def ff_write(fn_ff, param_list):
     ff = ff.format(*param_list)
 
     fn_ff = os.path.join(os.getcwd(),'forcefield',fn_ff)
+
     with open(fn_ff, 'w') as f:
         f.write(ff)
         

@@ -3,6 +3,8 @@ import numpy as np
 
 import lmps_interact
 import os
+import shutil
+import sys
 import target
 import unit
 
@@ -14,7 +16,7 @@ class Objective(object):
         """
         self._tar     = tar
         self._lmp     = lmp_engine
-        self._job_dir = os.getcwd()
+        self._root    = os.getcwd()
         self.X2       = self.compute_X2()
 
     def compute_X2(self):
@@ -28,12 +30,12 @@ class Objective(object):
                 e_series.append(lmp.get_V(pose[0].reshape((1,-1))))
 
         elif self._tar.series_type == 'dimer':
-            # Requires auxiliary engine
-            # for monomer calculations
-            root = os.getcwd()
-            os.chdir(os.path.join(os.getcwd(), 'monomer_files'))
+            # Auxiliary engine for monomer calculations.
+            # NOTE: Copy ff file we just wrote to the monomer_files dir
+            os.chdir(os.path.join(self._root,'monomer_files'))
+            shutil.copy(os.path.join(self._root,'forcefield','ffield_060614.reax'),'.')
             lmp_mono = lmps_interact.LAMMPS('in.water')
-            os.chdir(root)
+            os.chdir(self._root)
 
             e_m1 = []
             e_m2 = []
@@ -43,28 +45,23 @@ class Objective(object):
                 coords = pose[0]
                 h2o1_coords = coords[:3]
                 h2o2_coords = coords[3:]
-
                 # Energy we want is the 2-body energy, so compute
                 # each monomer separately.
                 e_m1.append(lmp_mono.get_V(h2o1_coords.reshape((1,-1))[0]))
                 e_m2.append(lmp_mono.get_V(h2o2_coords.reshape((1,-1))[0]))
-
                 # Dimer
                 e_dimer.append(lmp.get_V(coords.reshape((1,-1))[0]))
 
-            e_m1 = np.array(e_m1)
-            e_m2 = np.array(e_m2)
+            e_m1, e_m2 = np.array(e_m1), np.array(e_m2)
             e_dimer = np.array(e_dimer)
-            e_2body  = e_dimer - e_m1
-            e_2body -= e_m2
+            e_2body  = (e_dimer - e_m1) - e_m2
             e_series = e_2body
-            os.chdir(self._job_dir)
 
         else:
+            # Trimer case not yet implemented
             pass
 
         e_series = np.array(e_series)
         diff = e_series - self._tar.energies
-        X2 = sum((diff / np.average(diff))**2) 
-
+        X2 = sum((diff / np.average(diff))**2) / len(diff)
         return X2
