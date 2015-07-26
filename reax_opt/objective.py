@@ -61,6 +61,9 @@ class Objective(object):
             # Trimer case not yet implemented
             pass
 
+        # Write out results for correlation plots.
+        np.savetxt('fit_energies.dat', np.array(e_series))
+
         e_series = np.array(e_series)
         diff = e_series - self._tar.energies
         X2 = sum((diff / np.average(diff))**2) / len(diff)
