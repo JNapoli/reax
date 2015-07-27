@@ -8,7 +8,7 @@ class Target(object):
         corresponding energies from file fn_train
         """
         self.poses, self.energies, self.series_type = self._load_poses(fn_train)
-        np.savetxt('orig_energies.dat', self.energies)
+        np.savetxt('tgt_energies.dat',self.energies)
 
     def _load_poses(self, fn_train):
 

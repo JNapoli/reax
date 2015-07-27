@@ -17,9 +17,9 @@ class Objective(object):
         self._tar     = tar
         self._lmp     = lmp_engine
         self._root    = os.getcwd()
-        self.X2       = self.compute_X2()
+        self.X2       = self.compute_X2(first=True)
 
-    def compute_X2(self):
+    def compute_X2(self, first=False):
         X2 = None
         lmp = self._lmp
         N = lmp.N
@@ -28,7 +28,6 @@ class Objective(object):
         if self._tar.series_type == 'monomer':
             for pose in self._tar.poses:
                 e_series.append(lmp.get_V(pose[0].reshape((1,-1))))
-
         elif self._tar.series_type == 'dimer':
             # Auxiliary engine for monomer calculations.
             # NOTE: Copy ff file we just wrote to the monomer_files dir
@@ -56,13 +55,14 @@ class Objective(object):
             e_dimer = np.array(e_dimer)
             e_2body  = (e_dimer - e_m1) - e_m2
             e_series = e_2body
-
         else:
             # Trimer case not yet implemented
             pass
 
         # Write out results for correlation plots.
         np.savetxt('fit_energies.dat', np.array(e_series))
+        if first:
+            shutil.copy('fit_energies.dat','original_ff_energies.dat')
 
         e_series = np.array(e_series)
         diff = e_series - self._tar.energies
