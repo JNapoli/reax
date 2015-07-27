@@ -17,9 +17,9 @@ class Objective(object):
         self._tar     = tar
         self._lmp     = lmp_engine
         self._root    = os.getcwd()
-        self.X2       = self.compute_X2(first=True)
+        self.X2       = self.compute_X2()
 
-    def compute_X2(self, first=False):
+    def compute_X2(self):
         X2 = None
         lmp = self._lmp
         N = lmp.N
@@ -61,10 +61,9 @@ class Objective(object):
 
         # Write out results for correlation plots.
         np.savetxt('fit_energies.dat', np.array(e_series))
-        if first:
-            shutil.copy('fit_energies.dat','original_ff_energies.dat')
 
         e_series = np.array(e_series)
+        self.e_series = e_series
         diff = e_series - self._tar.energies
         X2 = sum((diff / np.average(diff))**2) / len(diff)
         return X2
