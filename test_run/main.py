@@ -17,10 +17,12 @@ def instantiate_lammps(fn_in):
     return lmp
 
 
-def get_X2(params, tar):
+def get_X2(params, tar, first=False):
     reax.force_field.ff_write('ffield_060614.reax',params)
     lmp = instantiate_lammps('in.water')
     obj = reax.objective.Objective(tar,lmp)
+    if first:
+        np.savetxt('orig_ff_energies.dat',obj.e_series)
     return obj.X2
 
 
@@ -48,7 +50,7 @@ def main():
     acceptance = []
     #TODO: load parameter values from file
     params = [0.0283, 1.2885, 10.919, 0.9215]
-    mbeta = -1.0/1.0
+    mbeta = -1.0/10.0
     accepted = 0
     trials = 0
     initialized = False
@@ -56,7 +58,7 @@ def main():
     while True:
         if not initialized:
             # Calculate initial objective function.
-            X2 = get_X2(params,tar)
+            X2 = get_X2(params,tar,first=True)
             X2_series.append(X2)
             param_series = [[p] for p in params]
             initialized = True
@@ -77,6 +79,11 @@ def main():
                     param_series[i].append(params_temp[i])
                 params = params_temp
                 accepted += 1
+            else:
+                # Objective function and params stay the same
+                X2_series.append(X2_series[-1])
+                for i in range(len(params)):
+                    param_series[i].append(param_series[i][-1])
         trials += 1
         acceptance.append(float(accepted) / float(trials))
         if not trials % 10:
@@ -84,8 +91,8 @@ def main():
             np.savetxt('param_series_dump.dat', np.array(param_series))
             np.savetxt('X2_series_dump.dat', np.array(X2_series))
             np.savetxt('acceptance_rate.dat', np.array(acceptance))
-            print 'Step % 04d, Objective: % .3f' % (trials,
-                    X2_series[-1])
+        if not trials % 250:
+            mbeta *= 2
 
     #grads  = [0.0] * len(params)
     #for i, p in enumerate(params):
