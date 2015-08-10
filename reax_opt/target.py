@@ -8,7 +8,7 @@ class Target(object):
         corresponding energies from file fn_train
         """
         self.poses, self.energies, self.series_type = self._load_poses(fn_train)
-        np.savetxt('tgt_energies.dat',self.energies)
+        np.savetxt('tgt-energies.dat',self.energies)
 
     def _load_poses(self, fn_train):
 
@@ -39,6 +39,8 @@ class Target(object):
             s_type = 'dimer'
         elif len(poses[0][0]) == 9:
             s_type = 'trimer'
+        elif len(poses[0][0]) == 7:
+            s_type = 'hydronium'
 
         return poses, energies, s_type
 
