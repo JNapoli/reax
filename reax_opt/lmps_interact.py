@@ -39,7 +39,7 @@ class LAMMPS(object):
         lmp.scatter_atoms('x', 2, 3, self._x_c)
 
         # Update energy and forces in LAMMPS
-        lmp.command('run 1 pre no post no')
+        lmp.command('run 1 pre yes post no')
 
         # Get energy and forces from LAMMPS
         V = float(lmp.extract_compute('thermo_pe', 0, 0))

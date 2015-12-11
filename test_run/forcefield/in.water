@@ -4,7 +4,7 @@ atom_style	 full
 read_data	 W2-dimer-data.water
 
 pair_style   reax/c control.reaxc.water
-pair_coeff   * * ffield_060614.reax H O
+pair_coeff   * * ffield_060614.reax_modified H O
 
 neighbor     30.0 nsq
 neigh_modify once yes
